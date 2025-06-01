@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Assessment Chat</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .content {
+            display: flex;
+            min-height: 600px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-right: 1px solid #e9ecef;
+        }
+
+        .main-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #545b62;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .chat-messages {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow-y: auto;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: #fafafa;
+            min-height: 400px;
+            max-height: 500px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .message.user {
+            background: #e3f2fd;
+            margin-left: 20%;
+            border-left: 4px solid #2196f3;
+        }
+
+        .message.assistant {
+            background: #f1f8e9;
+            margin-right: 20%;
+            border-left: 4px solid #4caf50;
+        }
+
+        .message-header {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .api-test {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #ffeaa7;
+        }
+
+        .api-result {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-online {
+            background-color: #28a745;
+        }
+
+        .status-offline {
+            background-color: #dc3545;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .message.user {
+                margin-left: 5%;
+            }
+            
+            .message.assistant {
+                margin-right: 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Business Workflow Assessment</h1>
+            <p>AI-Powered Workflow Optimization Platform</p>
+        </div>
+        
+        <div class="content">
+            <div class="sidebar">
+                <div class="api-test">
+                    <h3>🔧 API Configuration</h3>
+                    <div class="form-group">
+                        <label for="baseUrl">Base URL:</label>
+                        <input type="text" id="baseUrl" value="https://agent-prod.studio.lyzr.ai/v3/inference/chat/">
+                    </div>
+                    <div class="form-group">
+                        <label for="apiKey">API Key:</label>
+                        <input type="password" id="apiKey" value="sk-default-H0RDPuvT95RpWUepisEbn0NVZEs0hBEf">
+                    </div>
+                    <div class="form-group">
+                        <label for="userId">User ID:</label>
+                        <input type="text" id="userId" value="katewamukul@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="agentId">Agent ID:</label>
+                        <input type="text" id="agentId" value="683af84cc446a3a00dfef86c">
+                    </div>
+                    <div class="form-group">
+                        <label for="sessionId">Session ID:</label>
+                        <input type="text" id="sessionId" value="683af84cc446a3a00dfef86c-18amvsw1twg">
+                    </div>
+                    
+                    <button id="testApiButton" class="btn btn-secondary">Test Connection</button>
+                    <div class="api-result" id="apiTestResult">Ready to test API connection</div>
+                </div>
+                
+                <div style="text-align: center;">
+                    <span class="status-indicator status-offline" id="connectionStatus"></span>
+                    <span id="connectionText">Disconnected</span>
+                </div>
+            </div>
+            
+            <div class="main-chat">
+                <div class="chat-messages" id="chatMessages"></div>
+                
+                <div class="input-area">
+                    <input type="text" id="userInput" placeholder="Type your message here..." disabled>
+                    <button id="sendButton" class="btn btn-primary" disabled>Send</button>
+                    <button id="startAssessmentButton" class="btn btn-success">Start Assessment</button>
+                    <button id="clearChatButton" class="btn btn-danger">Clear Chat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class BusinessAssessmentChat {
+            constructor() {
+                this.questions = [
+                    {
+                        id: "businessType",
+                        question: "Hi! I'm your Workflow Optimization Strategist. Let's get started! 🌟 What type of business do you run, and what are your core services or products?",
+                        placeholder: "e.g., E-commerce store selling handmade jewelry, Digital marketing agency, SaaS company...",
+                    },
+                    {
+                        id: "teamSize",
+                        question: "Great! How many employees or team members are in your organization?",
+                        placeholder: "e.g., Just me, 2-5 people, 10-20 employees, 50+ team members...",
+                    },
+                    {
+                        id: "timeConsumingProcesses",
+                        question: "Which processes or departments feel the most time-consuming or costly for you right now?",
+                        placeholder: "e.g., Customer support takes too long, Manual data entry, Inventory management...",
+                    },
+                    {
+                        id: "currentTools",
+                        question: "Do you currently use any AI tools or automation solutions? If so, which ones?",
+                        placeholder: "e.g., ChatGPT for content, Zapier for automation, CRM with AI features, None yet...",
+                    },
+                    {
+                        id: "budget",
+                        question: "What's your approximate monthly or annual budget for improving operations?",
+                        placeholder: "e.g., $500/month, $5,000/year, $10,000+ annually, Still exploring options...",
+                    },
+                    {
+                        id: "goals",
+                        question: "What are your top 2–3 goals for workflow improvement?",
+                        placeholder: "e.g., Cut operational costs by 30%, Respond to customers faster, Automate repetitive tasks...",
+                    },
+                    {
+                        id: "specificAreas",
+                        question: "Lastly, are there specific areas where you'd like AI recommendations?",
+                        placeholder: "e.g., Automate email responses, Predict sales trends, Optimize staff scheduling...",
+                    },
+                ];
+
+                this.state = {
+                    currentQuestionIndex: 0,
+                    isAssessing: false,
+                    assessment: {},
+                    isConnected: false,
+                    isLoading: false
+                };
+
+                this.elements = this.initializeElements();
+                this.bindEvents();
+                this.initialize();
+            }
+
+            initializeElements() {
+                return {
+                    chatMessages: document.getElementById('chatMessages'),
+                    userInput: document.getElementById('userInput'),
+                    sendButton: document.getElementById('sendButton'),
+                    startAssessmentButton: document.getElementById('startAssessmentButton'),
+                    clearChatButton: document.getElementById('clearChatButton'),
+                    testApiButton: document.getElementById('testApiButton'),
+                    apiTestResult: document.getElementById('apiTestResult'),
+                    connectionStatus: document.getElementById('connectionStatus'),
+                    connectionText: document.getElementById('connectionText'),
+                    baseUrl: document.getElementById('baseUrl'),
+                    apiKey: document.getElementById('apiKey'),
+                    userId: document.getElementById('userId'),
+                    agentId: document.getElementById('agentId'),
+                    sessionId: document.getElementById('sessionId')
+                };
+            }
+
+            bindEvents() {
+                this.elements.sendButton.addEventListener('click', () => this.handleSendMessage());
+                this.elements.userInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.handleSendMessage();
+                    }
+                });
+                this.elements.startAssessmentButton.addEventListener('click', () => this.startAssessment());
+                this.elements.clearChatButton.addEventListener('click', () => this.clearChat());
+                this.elements.testApiButton.addEventListener('click', () => this.testApiConnection());
+            }
+
+            getApiConfig() {
+                return {
+                    baseUrl: this.elements.baseUrl.value.trim(),
+                    apiKey: this.elements.apiKey.value.trim(),
+                    userId: this.elements.userId.value.trim(),
+                    agentId: this.elements.agentId.value.trim(),
+                    sessionId: this.elements.sessionId.value.trim()
+                };
+            }
+
+            validateApiConfig(config) {
+                const required = ['baseUrl', 'apiKey', 'userId', 'agentId', 'sessionId'];
+                const missing = required.filter(key => !config[key]);
+                
+                if (missing.length > 0) {
+                    throw new Error(`Missing required fields: ${missing.join(', ')}`);
+                }
+                
+                if (!config.baseUrl.startsWith('http')) {
+                    throw new Error('Base URL must start with http:// or https://');
+                }
+            }
+
+            async callLyzrApi(message) {
+                if (!message?.trim()) {
+                    throw new Error('Message cannot be empty');
+                }
+
+                const config = this.getApiConfig();
+                this.validateApiConfig(config);
+
+                const requestBody = {
+                    user_id: config.userId,
+                    agent_id: config.agentId,
+                    session_id: config.sessionId,
+                    message: message.trim()
+                };
+
+                const response = await fetch(config.baseUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-api-key': config.apiKey
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`API Error (${response.status}): ${errorText}`);
+                }
+
+                const data = await response.json();
+                return this.extractMessage(data);
+            }
+
+            extractMessage(data) {
+                if (data.message) return data.message;
+                if (data.response) return data.response;
+                if (typeof data === 'string') return data;
+                return JSON.stringify(data);
+            }
+
+            addMessage(content, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isUser ? 'user' : 'assistant'}`;
+                
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'message-header';
+                headerDiv.textContent = isUser ? 'You' : 'Assistant';
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.innerHTML = this.formatMessage(content);
+                
+                messageDiv.appendChild(headerDiv);
+                messageDiv.appendChild(contentDiv);
+                
+                this.elements.chatMessages.appendChild(messageDiv);
+                this.scrollToBottom();
+            }
+
+            formatMessage(content) {
+                // Simple formatting for better readability
+                return content
+                    .replace(/\n/g, '<br>')
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>');
+            }
+
+            scrollToBottom() {
+                this.elements.chatMessages.scrollTop = this.elements.chatMessages.scrollHeight;
+            }
+
+            setLoadingState(isLoading) {
+                this.state.isLoading = isLoading;
+                const elements = [this.elements.sendButton, this.elements.userInput];
+                
+                elements.forEach(el => {
+                    el.disabled = isLoading || !this.state.isConnected;
+                    if (isLoading) el.classList.add('loading');
+                    else el.classList.remove('loading');
+                });
+            }
+
+            updateConnectionStatus(isConnected) {
+                this.state.isConnected = isConnected;
+                this.elements.connectionStatus.className = `status-indicator ${isConnected ? 'status-online' : 'status-offline'}`;
+                this.elements.connectionText.textContent = isConnected ? 'Connected' : 'Disconnected';
+                
+                this.elements.sendButton.disabled = !isConnected || this.state.isLoading;
+                this.elements.userInput.disabled = !isConnected || this.state.isLoading;
+            }
+
+            async testApiConnection() {
+                this.elements.apiTestResult.textContent = 'Testing connection...';
+                this.elements.testApiButton.disabled = true;
+
+                try {
+                    const response = await this.callLyzrApi('Hello, testing connection!');
+                    this.elements.apiTestResult.textContent = `✅ Connection successful!\nResponse: ${response}`;
+                    this.updateConnectionStatus(true);
+                } catch (error) {
+                    this.elements.apiTestResult.textContent = `❌ Connection failed:\n${error.message}`;
+                    this.updateConnectionStatus(false);
+                } finally {
+                    this.elements.testApiButton.disabled = false;
+                }
+            }
+
+            async handleSendMessage() {
+                const message = this.elements.userInput.value.trim();
+                if (!message) return;
+
+                this.addMessage(message, true);
+                this.elements.userInput.value = '';
+                this.setLoadingState(true);
+
+                try {
+                    if (this.state.isAssessing) {
+                        await this.handleAssessmentAnswer(message);
+                    } else {
+                        const response = await this.callLyzrApi(message);
+                        this.addMessage(response);
+                    }
+                } catch (error) {
+                    this.addMessage(`Sorry, I encountered an error: ${error.message}`, false);
+                } finally {
+                    this.setLoadingState(false);
+                }
+            }
+
+            async handleAssessmentAnswer(answer) {
+                const currentQuestion = this.questions[this.state.currentQuestionIndex];
+                this.state.assessment[currentQuestion.id] = answer;
+
+                if (this.state.currentQuestionIndex < this.questions.length - 1) {
+                    this.state.currentQuestionIndex++;
+                    const nextQuestion = this.questions[this.state.currentQuestionIndex];
+                    
+                    setTimeout(() => {
+                        this.addMessage(nextQuestion.question);
+                        this.elements.userInput.placeholder = nextQuestion.placeholder;
+                    }, 1000);
+                } else {
+                    this.state.isAssessing = false;
+                    setTimeout(() => this.generateAssessmentReport(), 1000);
+                }
+            }
+
+            async generateAssessmentReport() {
+                this.addMessage("🔄 Analyzing your responses and generating your custom workflow optimization report...");
+
+                try {
+                    const formattedAssessment = this.formatAssessmentForApi();
+                    const response = await this.callLyzrApi(formattedAssessment);
+                    this.addMessage(response);
+                } catch (error) {
+                    this.addMessage(`I encountered an error while generating your report: ${error.message}. Please try again or contact support.`);
+                }
+            }
+
+            formatAssessmentForApi() {
+                const questionMap = {
+                    businessType: "Business Type and Services",
+                    teamSize: "Team Size",
+                    timeConsumingProcesses: "Most Time-Consuming Processes",
+                    currentTools: "Current AI/Automation Tools",
+                    budget: "Budget for Operations Improvement",
+                    goals: "Top Goals for Workflow Improvement",
+                    specificAreas: "Specific Areas for AI Recommendations"
+                };
+
+                let message = "Please analyze my business assessment and provide personalized AI workflow optimization recommendations:\n\n";
+                
+                Object.entries(this.state.assessment).forEach(([key, value]) => {
+                    const questionTitle = questionMap[key] || key;
+                    message += `**${questionTitle}:** ${value}\n\n`;
+                });
+                
+                message += `
+**Please provide:**
+1. Specific AI tools and solutions that would benefit my business
+2. Priority areas for automation based on my goals and budget
+3. Implementation recommendations and next steps
+4. Expected ROI and benefits
+
+Please be specific and actionable in your recommendations.`;
+                
+                return message;
+            }
+
+            startAssessment() {
+                this.state.isAssessing = true;
+                this.state.currentQuestionIndex = 0;
+                this.state.assessment = {};
+
+                this.addMessage("I'd like to assess my business for AI workflow optimization", true);
+                
+                setTimeout(() => {
+                    this.addMessage("Perfect! I'll help you create a custom AI-powered workflow plan. Let me ask you 7 key questions to understand your business and provide personalized recommendations. This will take just a few minutes! 🚀");
+                    
+                    setTimeout(() => {
+                        const firstQuestion = this.questions[0];
+                        this.addMessage(firstQuestion.question);
+                        this.elements.userInput.placeholder = firstQuestion.placeholder;
+                    }, 1000);
+                }, 1000);
+            }
+
+            clearChat() {
+                this.elements.chatMessages.innerHTML = '';
+                this.state.isAssessing = false;
+                this.state.currentQuestionIndex = 0;
+                this.state.assessment = {};
+                this.elements.userInput.placeholder = "Type your message here...";
+                this.initialize();
+            }
+
+            initialize() {
+                this.addMessage("👋 Welcome to the Business Workflow Assessment! Click 'Start Assessment' to begin, or ask me anything about optimizing your business workflows.");
+                this.updateConnectionStatus(false);
+            }
+        }
+
+        // Initialize the application when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new BusinessAssessmentChat();
+        });
+    </script>
+</body>
+</html>
