@@ -123,6 +123,20 @@ export default function Home() {
                 </Button>
               </form>
             </CardContent>
+            <div className="flex items-start gap-2 bg-[#23253b] border-l-4 border-indigo-500 rounded-md p-4 relative">
+
+                <div className="flex-1">
+
+                  <span className="block text-xs text-indigo-400 font-semibold mb-1">Example Prompt</span>
+
+                  <span className="block text-sm text-slate-300">
+
+                    This medium-sized logistics and last-mile delivery service, with a total monthly expenditure of ₹15,00,000, currently utilizes cloud-based AI for route optimization (saving 15% on fuel) and a website chatbot for customer service (handling 40% of inquiries), spending ₹1,20,000 monthly on these tools. While route optimization is highly effective, chatbot integration with their on-premise order system has faced some challenges; they are exploring AI for predictive vehicle maintenance, with two IT staff managing AI subscriptions and strictly adhering to Indian data protection laws for customer data.
+
+                  </span>
+
+                </div>
+              </div>
           </Card>
 
           {/* Loading */}
