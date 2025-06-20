@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { TrendingUp, CheckCircle2, Bolt , ShieldAlert} from "lucide-react";
 
 const message = "This medium-sized logistics and last-mile delivery service, with a total monthly expenditure of ₹15,00,000, currently utilizes cloud-based AI for route optimization (saving 15% on fuel) and a website chatbot for customer service (handling 40% of inquiries), spending ₹1,20,000 monthly on these tools. While route optimization is highly effective, chatbot integration with their on-premise order system has faced some challenges; they are exploring AI for predictive vehicle maintenance, with two IT staff managing AI subscriptions and strictly adhering to Indian data protection laws for customer data.";
 
@@ -113,76 +114,154 @@ export default function SWOT({ analysisData }) {
 
     return (
         <div className="mb-8">
-            <h2 className="text-lg font-semibold mb-2">SWOT Analysis</h2>
-            <div className="mb-8">
-                <h2 className="text-lg font-semibold mb-2">Key Opportunities</h2>
-                <div className="space-y-4 text-black">
-                    {analysis["Key Opportunities"]?.map((opportunity, index) => (
-                        <div key={index} className="p-4 border rounded bg-white shadow">
-                            <h3 className="text-lg font-bold mb-2">Opportunity: {opportunity.Opportunity}</h3>
-                            <p className="text-gray-700 mb-2">Description: {opportunity.Description}</p>
-                            <p className="text-green-600 font-medium">Cost Savings: {opportunity.Justification}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
+            <h2 className="text-lg font-semibold mb-2">Opporutnity Analysis</h2>
             
-            <div className="2">
-                <h2 className="text-lg font-semibold mb-2">Recommendations</h2>
-                <div className="space-y-4">
-                    {analysis?.Recommendations?.map((data, index) => (
-                        <Card key={index} className="mb-4">
-                            <CardHeader>
-                                <CardTitle>Action: {data.Action}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <CardDescription>Description: {data.Description}</CardDescription>
-                                <Badge variant="outline" className="mt-2">Cost Savings: {data["Cost Savings"]}</Badge>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
-            </div>
+            <section className="bg-gradient-to-tr from-sky-900 via-blue-900 to-slate-900 p-8 rounded-2xl shadow-2xl border border-blue-800 mb-10">
+  <h2 className="text-3xl font-extrabold mb-8 bg-gradient-to-r from-blue-300 to-sky-400 bg-clip-text text-transparent tracking-tight">
+    Key Opportunities
+  </h2>
+  <div className="space-y-6">
+    {analysis["Key Opportunities"]?.map((opportunity, index) => (
+      <div
+        key={index}
+        className="p-6 rounded-2xl shadow-lg border-0 bg-gradient-to-br from-sky-100 via-white to-blue-50 dark:from-blue-900/60 dark:via-slate-900 dark:to-blue-900 transition"
+      >
+        <div className="flex items-center gap-2 mb-3">
+          <TrendingUp className="w-6 h-6 text-sky-500 dark:text-sky-300" />
+          <h3 className="text-xl font-bold bg-gradient-to-r from-blue-700 to-sky-400 dark:from-sky-300 dark:to-blue-400 bg-clip-text text-transparent">
+            Opportunity: <span className="capitalize">{opportunity.Opportunity}</span>
+          </h3>
+        </div>
+        <p className="text-gray-700 dark:text-blue-100 mb-2">
+          <span className="font-semibold text-sky-600 dark:text-sky-300">Description:</span>{" "}
+          {opportunity.Description}
+        </p>
+        <p className="text-green-700 dark:text-green-400 font-bold tracking-wide mt-3">
+          Cost Savings: <span className="font-semibold">{opportunity.Justification}</span>
+        </p>
+      </div>
+    ))}
+  </div>
+</section>
+            
 
-            <div className="3">
-                <h2 className="text-lg font-semibold mb-2">Quick Wins</h2>
-                <div className="space-y-4">
-                    {analysis["Quick Wins"]?.map((opportunity, index) => (
-                        <Card key={index} className="mb-4">
-                            <CardHeader>
-                                <CardTitle>Optimization: {opportunity.Optimization}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <CardDescription>Description: {opportunity.Description}</CardDescription>
-                                <div className="mt-2 space-y-2">
-                                    <Badge variant="outline" className="text-green-600">Timeline: {opportunity.Timeline}</Badge>
-                                    <Badge variant="outline" className="text-green-600">Effort: {opportunity.Effort}</Badge>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
-            </div>
+<section className="bg-gradient-to-tr from-emerald-900 via-gray-900 to-sky-950 p-8 rounded-2xl shadow-2xl border border-emerald-800 mb-10">
+  <div className="flex items-center gap-2 mb-4">
+    <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+    <h2 className="text-2xl font-bold tracking-tight bg-gradient-to-r from-emerald-400 to-sky-400 bg-clip-text text-transparent">
+      Recommendations
+    </h2>
+  </div>
+  <div className="space-y-6">
+    {analysis?.Recommendations?.map((data, index) => (
+      <Card
+        key={index}
+        className="border-0 bg-gradient-to-br from-emerald-50/80 via-white/90 to-sky-50 dark:from-emerald-950/60 dark:via-gray-900 dark:to-sky-950/70 shadow-lg rounded-xl"
+      >
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-emerald-700 dark:text-emerald-300">
+            Action: <span className="font-normal">{data.Action}</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CardDescription className="text-gray-700 dark:text-gray-200 mb-3">
+            {data.Description}
+          </CardDescription>
+          <Badge
+            variant="outline"
+            className="mt-2 border-emerald-400 bg-emerald-100/50 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200"
+          >
+            💸 Cost Savings: {data["Cost Savings"]}
+          </Badge>
+        </CardContent>
+      </Card>
+    ))}
+  </div>
+</section>
 
-            <div className="4">
-                <h2 className="text-lg font-semibold mb-2">Sensitive Data Exposure</h2>
-                <div className="space-y-4">
-                    {analysis["Sensitive Data Exposure"]?.map((opportunity, index) => (
-                        <Card key={index} className="mb-4">
-                            <CardHeader>
-                                <CardTitle>Category: {opportunity.Category}</CardTitle>
+
+
+                <section className="bg-gradient-to-tr from-slate-900 via-green-900 to-blue-900 p-8 rounded-2xl shadow-2xl space-y-8 border border-gray-800 mb-10">
+                    <h2 className="text-3xl font-extrabold bg-gradient-to-r from-green-400 to-blue-300 bg-clip-text text-transparent tracking-tight">
+                        Quick Wins
+                    </h2>
+                    <div className="grid md:grid-cols-2 gap-8">
+                        {analysis["Quick Wins"]?.map((opportunity, index) => (
+                        <Card key={index} className="bg-green-900/40 border-0 shadow-lg">
+                            <CardHeader className="pb-2">
+                            <div className="flex items-center gap-2 mb-1">
+                                <Bolt className="w-6 h-6 text-green-200" /> {/* Use a "Bolt" or lightning icon */}
+                                <CardTitle className="text-xl font-semibold text-green-100">
+                                {opportunity.Optimization}
+                                </CardTitle>
+                            </div>
                             </CardHeader>
                             <CardContent>
-                                <CardDescription>Description: {opportunity.Description}</CardDescription>
-                                <div className="mt-2 space-y-2">
-                                    <Badge variant="outline" className="text-green-600">Risk Level: {opportunity["Risk Level"]}</Badge>
-                                    <Badge variant="outline" className="text-green-600">Protection Measures: {opportunity["Protection Measures"]}</Badge>
+                            <div className="space-y-4 text-green-100 text-base">
+                                <div>
+                                <span className="font-semibold text-green-200">Description:</span>
+                                <span className="ml-2">{opportunity.Description}</span>
                                 </div>
+                                <div>
+                                <span className="inline-block mr-4">
+                                    <Badge variant="outline" className="text-green-200 border-green-500 bg-green-800/60">
+                                    Timeline: {opportunity.Timeline}
+                                    </Badge>
+                                </span>
+                                <span>
+                                    <Badge variant="outline" className="text-green-200 border-green-500 bg-green-800/60">
+                                    Effort: {opportunity.Effort}
+                                    </Badge>
+                                </span>
+                                </div>
+                            </div>
                             </CardContent>
                         </Card>
-                    ))}
-                </div>
+                        ))}
+                    </div>
+                    </section>
+
+
+
+                    <section className="bg-gradient-to-tr from-slate-900 via-red-900 to-blue-900 p-8 rounded-2xl shadow-2xl space-y-8 border border-gray-800 mb-10">
+  <h2 className="text-3xl font-extrabold bg-gradient-to-r from-red-400 to-blue-300 bg-clip-text text-transparent tracking-tight">
+    Sensitive Data Exposure
+  </h2>
+  <div className="grid md:grid-cols-2 gap-8">
+    {analysis["Sensitive Data Exposure"]?.map((opportunity, index) => (
+      <Card key={index} className="bg-red-900/40 border-0 shadow-lg">
+        <CardHeader className="pb-2">
+          <div className="flex items-center gap-2 mb-1">
+            <ShieldAlert className="w-6 h-6 text-red-200" />
+            <CardTitle className="text-xl font-semibold text-red-100">
+              Category: {opportunity.Category}
+            </CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4 text-red-100 text-base">
+            <div>
+              <span className="font-semibold text-red-200">Description:</span>
+              <span className="ml-2">{opportunity.Description}</span>
             </div>
+            <div>
+              <span className="inline-block mr-4">
+                <Badge variant="outline" className="text-red-200 border-red-500 bg-red-800/60">
+                  Risk Level: {opportunity["Risk Level"]}
+                </Badge>
+              </span>
+              <span>
+                <Badge variant="outline" className="text-blue-200 border-blue-400 bg-blue-800/60">
+                  Protection Measures: {opportunity["Protection Measures"]}
+                </Badge>
+              </span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    ))}
+  </div>
+</section>
 
 
         </div>

@@ -32,7 +32,16 @@ export function removeMarkdown(text) {
         .trim();
 }
 
-export async function callLyzrChatAgentRoadmap(userMessage) {
+
+function normalizeToArray(value) {
+  if (Array.isArray(value)) return value;
+  if (value !== undefined && value !== null) return [value];
+  return [];
+}
+
+
+
+export async function callLyzrChatAgentRoadmap(userMessage, maxRetries = 3) {
     const url = 'https://agent-prod.studio.lyzr.ai/v3/inference/chat/';
     const apiKey = process.env.LYZR_API_KEY || 'sk-default-H0RDPuvT95RpWUepisEbn0NVZEs0hBEf';
     const payload = {
@@ -42,26 +51,43 @@ export async function callLyzrChatAgentRoadmap(userMessage) {
         message: userMessage
     };
 
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': apiKey
-        },
-        body: JSON.stringify(payload)
-    });
+    let attempt = 0;
+    const baseDelay = 1000; // 1 second base delay
 
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! Status: ${response.status} - ${errorText}`);
-    }
+    while (attempt < maxRetries) {
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': apiKey
+                },
+                body: JSON.stringify(payload)
+            });
 
-    const result = await response.json();
-    let cleanResponse = removeMarkdown(result.response);
-    if (cleanResponse.startsWith('json')) {
-        cleanResponse = cleanResponse.replace(/^json\s*/i, '').trim();
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`HTTP error! Status: ${response.status} - ${errorText}`);
+            }
+
+            const result = await response.json();
+            let cleanResponse = removeMarkdown(result.response);
+            if (cleanResponse.startsWith('json')) {
+                cleanResponse = cleanResponse.replace(/^json\s*/i, '').trim();
+            }
+            return JSON.parse(cleanResponse);
+        } catch (error) {
+            attempt++;
+            if (attempt === maxRetries) {
+                throw error;
+            }
+            
+            // Exponential backoff: delay increases exponentially with each retry
+            const delay = baseDelay * Math.pow(2, attempt);
+            console.log(`Attempt ${attempt} failed. Retrying in ${delay/1000} seconds...`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+        }
     }
-    return JSON.parse(cleanResponse);
 }
 
 export default function Roadmap({ analysisData }) {
@@ -289,21 +315,34 @@ return (
                 <h3 className="text-xl font-semibold text-gray-800">Investment Summary</h3>
               </div>
               <div className="flex flex-col items-center">
-                <BarChart 
-                  width={300} 
-                  height={200} 
-                  data={[
-                    { name: 'Capex', value: analysis?.executive_summary?.investment?.capex || 0 },
-                    { name: 'Opex', value: analysis?.executive_summary?.investment?.opex || 0 },
-                  ]}
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="value" fill="#8b5cf6" />
-                </BarChart>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                  <div className="bg-gradient-to-r from-purple-600 to-purple-800 p-4 rounded-lg shadow-lg">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="text-sm font-medium text-purple-200">Capex</h4>
+                        <p className="text-2xl font-bold text-white">
+                          ${analysis?.executive_summary?.investment?.capex?.toLocaleString() || 0}
+                        </p>
+                      </div>
+                      <div className="w-12 h-12 bg-purple-200 rounded-full flex items-center justify-center">
+                        <DollarSign className="w-6 h-6 text-purple-800" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-gradient-to-r from-blue-600 to-blue-800 p-4 rounded-lg shadow-lg">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h4 className="text-sm font-medium text-blue-200">Opex</h4>
+                        <p className="text-2xl font-bold text-white">
+                          ${analysis?.executive_summary?.investment?.opex?.toLocaleString() || 0}
+                        </p>
+                      </div>
+                      <div className="w-12 h-12 bg-blue-200 rounded-full flex items-center justify-center">
+                        <DollarSign className="w-6 h-6 text-blue-800" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 
                 <div className="flex items-center mt-4 bg-purple-50 p-3 rounded-lg">
                   <DollarSign className="text-purple-600 w-5 h-5 mr-1" />
@@ -365,7 +404,7 @@ return (
   
       {/* Budget Section */}
       
-      <Card className="mb-10 shadow-xl border border-gray-200">
+      {/* <Card className="mb-10 shadow-xl border border-gray-200">
   <CardHeader className="pb-4">
     <CardTitle className="text-3xl font-semibold flex items-center gap-2">
       <DollarSign className="h-6 w-6 text-green-600" />
@@ -387,12 +426,9 @@ return (
         </TableHeader>
         <TableBody>
           {analysis?.team_structure?.roles?.map((role, index) => {
-            const salaryStr = role.salary_range?.[0] || "";
-            const cleaned = salaryStr.replace(/[₹,]/g, "").split("-").map(s => parseInt(s.trim()));
-            let avgSalary = 0;
-            if (cleaned.length === 2 && !isNaN(cleaned[0]) && !isNaN(cleaned[1])) {
-              avgSalary = ((cleaned[0] + cleaned[1]) / 2) * (role.headcount || 1);
-            }
+            const salary = parseInt(role.salary || 0);
+            const totalSalary = salary * (role.headcount || 1);
+
             return (
               <TableRow key={index}>
                 <TableCell>
@@ -402,7 +438,7 @@ return (
                   </div>
                 </TableCell>
                 <TableCell className="text-right text-green-700 font-medium">
-                  ₹{avgSalary.toLocaleString()}
+                  ₹{totalSalary.toLocaleString()}
                 </TableCell>
               </TableRow>
             );
@@ -442,11 +478,8 @@ return (
               ₹{(() => {
                 let total = 0;
                 analysis?.team_structure?.roles?.forEach((role) => {
-                  const salaryStr = role.salary_range?.[0] || "";
-                  const cleaned = salaryStr.replace(/[₹,]/g, "").split("-").map(s => parseInt(s.trim()));
-                  if (cleaned.length === 2 && !isNaN(cleaned[0]) && !isNaN(cleaned[1])) {
-                    total += ((cleaned[0] + cleaned[1]) / 2) * (role.headcount || 1);
-                  }
+                  const salary = parseInt(role.salary || 0);
+                  total += salary * (role.headcount || 1);
                 });
                 total += analysis?.budget?.technology?.cloudaiservices || 0;
                 total += analysis?.budget?.contingency || 0;
@@ -458,7 +491,8 @@ return (
       </Table>
     </div>
   </CardContent>
-</Card>
+</Card> */}
+
 
 
       <Separator className="my-8 bg-gray-300" />
@@ -543,12 +577,17 @@ return (
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-2 text-gray-800">Business Metrics</h3>
-            <ul className="list-disc ml-5 space-y-1 text-gray-700">
-              {analysis?.success_metrics?.business?.map((metric, index) => (
-                <li key={index}>{metric}</li>
-              ))}
-            </ul>
+          <h3 className="text-lg font-semibold mb-2 text-gray-800">Business Metrics</h3>
+          <ul className="list-disc ml-5 space-y-1 text-gray-700">
+            {(Array.isArray(analysis?.success_metrics?.business)
+              ? analysis.success_metrics.business
+              : analysis?.success_metrics?.business
+              ? [analysis.success_metrics.business]
+              : []
+            ).map((metric, index) => (
+              <li key={index}>{metric}</li>
+            ))}
+          </ul>
           </div>
         </CardContent>
       </Card>

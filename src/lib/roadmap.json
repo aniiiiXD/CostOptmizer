@@ -1,212 +1,155 @@
 {
   "organization_profile": {
-    "industry": "online education",
-    "size": "mid-market (80 employees)",
-    "ai_maturity": "Advanced (cloud-based AI)",
-    "monthly_expenditure": "₹14,00,000",
-    "monthlyaispend": "₹1,50,000",
-    "cloud_provider": "AWS",
+    "industry": "Recruitment Agency",
+    "size": "Small-Medium (60 employees)",
+    "ai_maturity": "3 (AI for hiring)",
+    "budget": 1100000,
     "location": "India",
-    "goal": "Enhance student engagement, reduce instructor workload, and improve query resolution with AI while maintaining data privacy."
+    "goal": "Improve Efficiency in Hiring process while reducing the cost and Improving Quality"
   },
   "executive_summary": {
     "recommendations": [
-      "Refine GenAI model for complex question generation to reduce human review by 30%",
-      "Implement a data quality framework to improve the accuracy of personalized learning path recommendations.",
-      "Expand AI-powered chatbot capabilities to handle more complex student queries, potentially integrating voice support."
+      "Refine Generative AI for personalized outreach to reduce manual editing.",
+      "Explore automating more aspects of the recruitment process with AI, specifically interview scheduling.",
+      "Enhance AI-driven analytics for better candidate insights and cost optimization"
     ],
     "timeline": {
-      "phase_1": "Refinement & Data Quality (Months 1-3)",
-      "phase_2": "Expansion & Optimization (Months 4-6)",
-      "phase_3": "Scale & Innovation (Months 7-12)"
+      "phase_1": "Refinement and Automation (Months 1-6)",
+      "phase_2": "Expansion and Optimization (Months 7-12)"
     },
     "investment": {
-      "total_annual": "₹20,00,000",
-      "capex": "₹2,00,000",
-      "opex": "₹18,00,000"
+      "total": 1100000,
+      "capex": 100000,
+      "opex": 1000000
     }
   },
   "team_structure": {
     "roles": [
       {
-        "name": "Senior Data Scientist",
+        "name": "AI Specialist",
         "headcount": 1,
-        "credentials": "PhD/MS in Machine Learning, 5+ years experience in NLP/Education, AWS Certified",
-        "hiring_timeline": "Immediate",
+        "credentials": "Experience with AI/ML, NLP, Cloud Platforms",
+        "hiring_timeline": "Month 1-2",
         "salary_range": [
-          "₹12,00,000 - ₹18,00,000"
+          600000,
+          900000
         ],
-        "sourcing": "LinkedIn, Naukri, IIM/IIT alumni networks"
+        "sourcing": "Local Recruitment channels, online job boards"
       },
       {
-        "name": "NLP Engineer",
-        "headcount": 2,
-        "credentials": "BS/MS in Computer Science/NLP, 3+ years experience in NLP model development, AWS experience",
-        "hiring_timeline": "Month 1",
-        "salary_range": [
-          "₹8,00,000 - ₹12,00,000"
-        ],
-        "sourcing": "Naukri, AngelList, university placements"
-      },
-      {
-        "name": "Data Quality Analyst",
+        "name": "Data Analyst",
         "headcount": 1,
-        "credentials": "BS in Statistics/Data Science, 2+ years experience in data quality management, SQL proficiency",
-        "hiring_timeline": "Month 2",
+        "credentials": "Data analysis, reporting tools experience",
+        "hiring_timeline": "Month 2-3",
         "salary_range": [
-          "₹6,00,000 - ₹9,00,000"
+          500000,
+          700000
         ],
-        "sourcing": "LinkedIn, Indeed"
+        "sourcing": "Local recruitment channels, online job boards"
       }
     ],
-    "existingteamstructure": "Leverage the existing team of 5 data scientists/ML engineers.",
     "diversity_goal": "30% women in technical roles"
   },
   "budget": {
     "personnel": {
-      "seniordatascientist": "₹15,00,000",
-      "nlp_engineer": "₹20,00,000",
-      "dataqualityanalyst": "₹7,50,000",
-      "training": "₹75,000"
+      "ai_specialist": 800000,
+      "data_analyst": 600000,
+      "training": 50000
     },
     "technology": {
-      "awscomputeand_services": "₹10,00,000",
-      "nlpmodeltrainingandfine_tuning": "₹2,00,000",
-      "dataqualitytools": "₹1,00,000"
+      "cloud_ai": 100000,
+      "additional_tools": 200000
     },
-    "contingency": "₹2,00,000"
+    "contingency": 100000
   },
   "timeline": {
     "milestones": [
       {
-        "name": "Senior Data Scientist hired",
-        "month": 1,
+        "name": "AI Specialist hired",
+        "month": 2,
         "dependencies": [
-          "HR approval",
-          "Offer acceptance"
+          "HR approval"
         ]
       },
       {
-        "name": "Data Quality Framework deployed",
-        "month": 3,
-        "success_criteria": "Data accuracy improvement by 15%"
+        "name": "Generative AI refinement complete",
+        "month": 4,
+        "success_criteria": "Reduced manual editing by 50%"
       },
       {
-        "name": "GenAI model Refinement",
+        "name": "Pilot AI for interview scheduling",
         "month": 6,
-        "success_criteria": "Human review reduced by 30%"
+        "success_criteria": "Automated scheduling process by 60%"
       },
       {
-        "name": "Expansion of Chatbot Capabilities",
-        "month": 9,
-        "success_criteria": "Increased query resolution rate by 20%"
-      },
-      {
-        "name": "AI-powered voice support integration (Pilot)",
-        "month": 12,
-        "success_criteria": "User satisfaction rate of 80%"
+        "name": "Data Analyst hired",
+        "month": 3,
+        "success_criteria": "Data analysis complete by month 6"
       }
     ]
   },
   "risk_register": [
     {
+      "name": "Poor Generative AI output",
+      "probability": "medium",
+      "impact": "moderate",
+      "mitigation": "Refine prompts, add human review steps",
+      "mitigation_budget": 20000
+    },
+    {
       "name": "Data privacy violations",
-      "probability": "Medium",
-      "impact": "Critical",
-      "mitigation": "Regular audits and ensure strict adherence to the Indian data protection laws.",
-      "mitigation_budget": "₹50,000 (Annual audit)"
-    },
-    {
-      "name": "Model accuracy and performance degradation",
-      "probability": "Medium",
-      "impact": "Significant",
-      "mitigation": "Implement continuous monitoring and retraining of the models.",
-      "mitigation_budget": "₹1,00,000 (For retraining and monitoring tools)"
-    },
-    {
-      "name": "High costs for cloud-based services",
-      "probability": "Medium",
-      "impact": "Moderate",
-      "mitigation": "Optimize resource allocation and usage of cloud services.",
-      "mitigation_budget": "₹50,000 (For cost optimization tools)"
-    },
-    {
-      "name": "Lack of skilled talent",
-      "probability": "Medium",
-      "impact": "Moderate",
-      "mitigation": "Aggressive hiring and on-the-job training of existing staff",
-      "mitigation_budget": "₹75,000 (for training programs)"
-    },
-    {
-      "name": "Difficulty in model explainability and transparency",
-      "probability": "Low",
-      "impact": "Moderate",
-      "mitigation": "Use explainable AI tools and techniques",
-      "mitigation_budget": "₹25,000"
+      "probability": "low",
+      "impact": "critical",
+      "mitigation": "Regular compliance audits",
+      "mitigation_budget": 10000
     }
   ],
   "success_metrics": {
     "technical": [
-      "GenAI model accuracy >90%",
-      "Data quality score >95%",
-      "Chatbot resolution rate >80%"
+      "Improve the accuracy of the output generated by the AI to 80%",
+      "Reduce human intervention time"
     ],
-    "business": [
-      "Student engagement increase by 10%",
-      "Instructor workload reduction by 20%",
-      "Student satisfaction with chatbot >85%"
-    ]
+    "business": "20% improvement in candidate conversion rates, and 15% reduction in hiring costs (12 months)"
   },
   "change_management": {
     "stakeholders": {
       "champions": [
-        "CEO",
-        "CTO",
-        "Head of Academics"
+        "HR Manager",
+        "AI Specialist"
       ],
       "resistors": {
-        "group": "Instructors",
-        "strategy": "Training on AI usage, demonstration of workload reduction"
+        "group": "Recruiters",
+        "strategy": "Training and demonstrate the benefits"
       }
     },
     "training": {
-      "plan": "Weekly workshops for instructors, AI awareness sessions for students",
-      "budget": "₹75,000 (annual)"
+      "plan": "Ongoing training on AI tools, data security, and AI ethics",
+      "budget": 30000
     }
   },
   "technology_roadmap": {
     "short_term": {
-      "goals": [
-        "Refine existing NLP models",
-        "Implement data quality framework",
-        "Enhance chatbot"
-      ],
       "tools": [
-        "AWS SageMaker, AWS Comprehend, Data Quality tools"
+        "Refine current AI platform",
+        "Explore additional tools for interview scheduling"
       ],
-      "budget": "₹3,00,000 (Annual)"
+      "budget": 200000
     },
     "long_term": {
-      "goals": [
-        "Implement AI-powered voice support",
-        "Develop in-house ML pipelines"
-      ],
-      "tools": [
-        "AWS Transcribe, custom model deployment pipelines"
-      ],
-      "budget": "₹7,00,000 (Year 2 onwards)"
+      "goal": "Full automation of resume matching and selection process by integrating with the in-house CRM and ATS system.",
+      "budget": 500000,
+      "year": 2
     }
   },
   "governance": {
     "approvers": [
-      "CTO",
-      "Head of Academics",
-      "Data Protection Officer"
+      "HR Manager",
+      "AI Specialist"
     ],
-    "reporting": "Monthly performance dashboards, Quarterly reviews"
+    "reporting": "Monthly performance dashboards"
   },
   "longtermstrategy": {
-    "scaling_trigger": " >15% increase in student engagement, 25% reduction in instructor workload",
-    "innovation_pipeline": "Annual AI hackathons for new ideas, explore new AI-powered features"
+    "scaling_trigger": "When conversion rates reaches a threshold of 80%",
+    "innovation_fund": 100000
   }
 }

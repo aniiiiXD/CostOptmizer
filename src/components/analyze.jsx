@@ -104,7 +104,7 @@ export default function Analyze({ analysisData }) {
 
     if (!analysis) {
         return (
-            <div className="text-gray-500 text-center p-4">
+            <div className="text-white text-center p-4">
                 No analysis available
             </div>
         );
@@ -191,71 +191,84 @@ export default function Analyze({ analysisData }) {
                     Current Challenges &amp; Summary
                 </h3>
                 </div>
-                <p className="text-black dark:text-gray-300 leading-relaxed">
+                <p className="text-white leading-relaxed">
                 {analysis?.swot_analysis?.brief}
                 </p>
             </div>
         </section>
 
 
-            {/* SWOT Section Reusable */}
-            {['strengths', 'weaknesses', 'opportunities', 'threats'].map((type) => {
-  // color/icon mapping
-                const colorAccent = {
-                    strengths:    "from-green-400 to-emerald-500",
-                    weaknesses:   "from-pink-400 to-red-400",
-                    opportunities:"from-sky-400 to-blue-400",
-                    threats:      "from-orange-400 to-red-500",
-                }[type];
+        {['strengths', 'weaknesses', 'opportunities', 'threats'].map((type) => {
+  // Color mapping for section backgrounds
+  const sectionBg = {
+    strengths:      "bg-green-900/40",
+    weaknesses:     "bg-pink-900/40",
+    opportunities:  "bg-blue-900/40",
+    threats:        "bg-orange-900/40",
+  }[type];
 
-                const iconMap = {
-                    strengths:    <ShieldCheck className="w-7 h-7 text-green-300" />,
-                    weaknesses:   <AlertCircle className="w-7 h-7 text-pink-300" />,
-                    opportunities:<TrendingUp className="w-7 h-7 text-sky-300" />,
-                    threats:      <Flame className="w-7 h-7 text-orange-300" />,
-                }[type];
+  const cardBg = {
+    strengths:      "bg-green-800/70",
+    weaknesses:     "bg-pink-800/70",
+    opportunities:  "bg-blue-800/70",
+    threats:        "bg-orange-800/70",
+  }[type];
 
-                return (
-                    <section
-                    key={type}
-                    className={`p-4 md:p-6 lg:p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 mb-10`}
-                    >
-                    <div className="flex items-center gap-3 mb-6">
-                        {iconMap}
-                        <h2 className={`text-2xl font-extrabold capitalize text-gradient bg-gradient-to-r ${colorAccent} bg-clip-text text-transparent tracking-tight`}>
-                        {type}
-                        </h2>
-                    </div>
-                    {(analysis?.swot_analysis?.[type] || []).map((item, index) => (
-                        <Card
-                        key={index}
-                        className="mb-7 border-0 shadow-lg bg-gradient-to-br from-white/80 via-white/65 to-gray-50 dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 dark:bg-opacity-90"
-                        >
-                        <CardHeader className="flex items-center gap-2 pb-2">
-                            <CardTitle className={`text-xl font-semibold`}>
-                            <span className={`bg-gradient-to-r ${colorAccent} bg-clip-text text-transparent`}>
-                                {item.title}
-                            </span>
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4 text-gray-700 dark:text-gray-300">
-                            <CardDescription>{item.description}</CardDescription>
-                            <div>
-                            <h4 className={`text-lg font-semibold mb-1`}>Examples</h4>
-                            <ul className="list-disc list-inside pl-4 ml-2">
-                                {item.examples.map((example, i) => <li key={i}>{example}</li>)}
-                            </ul>
-                            </div>
-                            <div>
-                            <h4 className={`text-lg font-semibold mb-1`}>Comparison</h4>
-                            <p>{item.comparison}</p>
-                            </div>
-                        </CardContent>
-                        </Card>
-                    ))}
-                    </section>
-                );
-                })}
+  const colorAccent = {
+    strengths:    "from-green-400 to-emerald-500",
+    weaknesses:   "from-pink-400 to-red-400",
+    opportunities:"from-sky-400 to-blue-400",
+    threats:      "from-orange-400 to-red-500",
+  }[type];
+
+  const iconMap = {
+    strengths:    <ShieldCheck className="w-7 h-7 text-green-300" />,
+    weaknesses:   <AlertCircle className="w-7 h-7 text-pink-300" />,
+    opportunities:<TrendingUp className="w-7 h-7 text-sky-300" />,
+    threats:      <Flame className="w-7 h-7 text-orange-300" />,
+  }[type];
+
+  return (
+    <section
+      key={type}
+      className={`p-4 md:p-6 lg:p-8 rounded-2xl shadow-2xl mb-10 border-0 ${sectionBg}`}
+    >
+      <div className="flex items-center gap-3 mb-6">
+        {iconMap}
+        <h2 className={`text-2xl font-extrabold capitalize text-gradient bg-gradient-to-r ${colorAccent} bg-clip-text text-transparent tracking-tight`}>
+          {type}
+        </h2>
+      </div>
+      {(analysis?.swot_analysis?.[type] || []).map((item, index) => (
+        <Card
+          key={index}
+          className={`mb-7 border-0 shadow-lg ${cardBg} bg-opacity-80`}
+        >
+          <CardHeader className="flex items-center gap-2 pb-2">
+            <CardTitle className={`text-xl font-semibold`}>
+              <span className={`bg-gradient-to-r ${colorAccent} bg-clip-text text-transparent`}>
+                {item.title}
+              </span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4 text-white">
+            <CardDescription>{item.description}</CardDescription>
+            <div>
+              <h4 className={`text-lg font-semibold mb-1`}>Examples</h4>
+              <ul className="list-disc list-inside pl-4 ml-2">
+                {item.examples.map((example, i) => <li key={i}>{example}</li>)}
+              </ul>
+            </div>
+            <div>
+              <h4 className={`text-lg font-semibold mb-1`}>Comparison</h4>
+              <p>{item.comparison}</p>
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </section>
+  );
+})}
 
 
             </div>

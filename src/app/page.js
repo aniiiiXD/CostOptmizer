@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, Rocket } from "lucide-react";
 import { SignedOut, SignedIn, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import Navbar from "../components/navbar";
+import {Info} from "lucide-react"
 
 export default function Home() {
   const [userMessage, setUserMessage] = useState("");
@@ -42,7 +43,7 @@ export default function Home() {
       
       {/* MAIN CONTENT */}
       <div className="pt-32 pb-16 w-full flex flex-col items-center min-h-screen">
-        <div className="w-full max-w-7xl flex flex-col items-center">
+        <div className="w-full px-10 flex flex-col items-center">
 
           {/* HERO Section */}
           <div className="mb-10 text-center">
@@ -56,9 +57,9 @@ export default function Home() {
           </div>
 
           {/* Form Card */}
-          <Card className="w-full max-w-3xl shadow-xl rounded-2xl bg-gradient-to-br from-[#181927] via-[#212234] to-[#24243e] border-0">
+          <Card className="w-full max-w-7xl shadow-xl rounded-2xl bg-gradient-to-br from-[#181927] via-[#212234] to-[#24243e] border-0">
             <CardHeader>
-              <CardTitle className="text-white font-semibold text-2xl">Describe Your Business</CardTitle>
+              <CardTitle className="text-white font-semibold text-3xl text-center">Describe Your Business</CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -96,14 +97,43 @@ export default function Home() {
 
                 <div className="flex-1">
 
-                  <span className="block text-xs text-indigo-400 font-semibold mb-1">Example Prompt</span>
+                  <span className="block text-xs text-indigo-400 font-semibold mb-1">How to Write a Great AI Business Evaluation Prompt</span>
 
-                  <span className="block text-sm text-slate-300">
-
-                    This medium-sized logistics and last-mile delivery service, with a total monthly expenditure of ₹15,00,000, currently utilizes cloud-based AI for route optimization (saving 15% on fuel) and a website chatbot for customer service (handling 40% of inquiries), spending ₹1,20,000 monthly on these tools. While route optimization is highly effective, chatbot integration with their on-premise order system has faced some challenges; they are exploring AI for predictive vehicle maintenance, with two IT staff managing AI subscriptions and strictly adhering to Indian data protection laws for customer data.
-
-                  </span>
-
+                  <ol className="pl-4 mt-4 space-y-5 text-slate-300">
+                    <li>
+                      <span className="font-bold text-indigo-400">Start with scale and context:</span>{" "}
+                      State <b>employee count</b>, <b>total spend</b>, <b>AI budget</b>, and any relevant cost ratios.
+                    </li>
+                    <li>
+                      <span className="font-bold text-indigo-400">Clearly list key AI use cases and tools:</span>{" "}
+                      Name main AI applications, integration points, and platform types (generative, automation, analytics, etc).
+                    </li>
+                    <li>
+                      <span className="font-bold text-indigo-400">Include outcome details:</span>{" "}
+                      Share both <b>positive business impacts</b> <span className="italic text-indigo-300">(e.g., time/cost saved, efficiency gained)</span> <b>and</b>{" "}
+                      <b>real challenges</b> or pain points.
+                    </li>
+                    <li>
+                      <span className="font-bold text-indigo-400">Describe technology + people:</span>{" "}
+                      Summarize <b>tech stack</b>, <b>infra</b> (cloud/on-prem), <b>team handling AI</b>, and <b>compliance/security</b>.
+                    </li>
+                    <li>
+                      <span className="font-bold text-indigo-400">Be precise and data-driven:</span>{" "}
+                      Use <b>specific numbers & timeframes</b>, not vague ranges or only positive claims.
+                    </li>
+                  </ol>
+                  <div className="mt-6">
+                    <p className="text-indigo-300 text-base font-semibold mb-2">Example:</p>
+                    <div className="bg-gradient-to-r from-indigo-800/50 via-purple-900/40 to-blue-900/40 border-l-4 border-indigo-400 py-3 px-6 text-slate-300 text-sm rounded-lg shadow-inner">
+                      With <b>60 employees</b> and a total monthly expenditure of <b>INR 11,00,000</b>, this agency spends <b>INR 1,00,000 per month</b> on cloud-based AI. They use AI for initial resume screening and matching candidates to job descriptions, significantly accelerating the hiring process. Additionally, a chatbot handles basic candidate FAQs about application status. While resume matching has proven highly efficient, the generative AI for drafting personalized candidate outreach emails sometimes requires significant editing. Their systems are a mix of on-premise CRM and cloud AI tools with a small team of <b>3</b> dedicated to managing their AI platforms, ensuring compliance with data protection laws for sensitive candidate personal and professional data.
+                    </div>
+                  </div>
+                  <ul className="mt-7 pl-4 space-y-2 text-indigo-300 text-xs list-disc">
+                    <li>✅ Always use specific employee count, spending, & team info</li>
+                    <li>✅ Include at least 2 AI use cases + a challenge</li>
+                    <li>✅ Add tech stack details (cloud/on-prem/hybrid, integrations)</li>
+                    <li>✅ Mention quantifiable impact or improvement</li>
+                  </ul>
                 </div>
               </div>
           </Card>
@@ -122,7 +152,7 @@ export default function Home() {
               <Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
                 <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 bg-[#222635] rounded-lg overflow-hidden shadow-lg border-0 mx-auto max-w-7xl">
                   <TabsTrigger className="data-[state=active]:bg-indigo-700 data-[state=active]:text-white text-slate-300 font-semibold" value="analyze">
-                    Analysis
+                    SWOT
                   </TabsTrigger>
                   <TabsTrigger className="data-[state=active]:bg-indigo-700 data-[state=active]:text-white text-slate-300 font-semibold" value="cost">
                     Cost
@@ -131,7 +161,7 @@ export default function Home() {
                     Roadmap
                   </TabsTrigger>
                   <TabsTrigger className="data-[state=active]:bg-indigo-700 data-[state=active]:text-white text-slate-300 font-semibold" value="swot">
-                    SWOT
+                    Analysis
                   </TabsTrigger>
                 </TabsList>
                 

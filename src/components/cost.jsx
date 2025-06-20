@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import { CheckCircle, CircleDollarSign, Cpu, Sparkles, BadgeDollarSign,  PiggyBank, PieChart as PieChartIcon, BarChart4 , Timer, ListChecks, Info , AlertTriangle, BookCheck} from "lucide-react";
+import { CheckCircle, CircleDollarSign, Cpu, Sparkles, BadgeDollarSign,  PiggyBank, PieChart as PieChartIcon, BarChart4 , Timer, ListChecks, Info , AlertTriangle, BookCheck, TrendingUp, Activity, DollarSign} from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Pie, PieChart, Cell, Legend } from "recharts";
 
@@ -11,6 +11,15 @@ const formatCurrency = (amount, currencySymbol) => {
  
     return `${currencySymbol}${new Intl.NumberFormat('en-IN').format(amount)}`;
 };
+
+
+
+const iconMap = {
+  "Return on Investment (ROI)": <TrendingUp className="w-5 h-5 text-indigo-400" />,
+  "Payback Period": <Timer className="w-5 h-5 text-indigo-400" />,
+  "Net Present Value (NPV) - 1 Year": <DollarSign className="w-5 h-5 text-indigo-400" />,
+  "Internal Rate of Return (IRR)": <Activity className="w-5 h-5 text-indigo-400" />
+}
 
 
 export function removeMarkdown(text) {
@@ -445,21 +454,20 @@ export default function COST({ analysisData }) {
               ))}
             </ul>
             {/* Bar Chart */}
-            <ResponsiveContainer width="100%" height={120}>
-              <BarChart
-                data={financial_analysis.metrics.map(item => ({
-                  name: item.metric,
-                  Value: parseFloat(item.value),
-                }))}
-                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" stroke="#a5b4fc" fontSize={11} />
-                <YAxis stroke="#a5b4fc" fontSize={11} />
-                <Tooltip />
-                <Bar dataKey="Value" fill="#818cf8" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  {financial_analysis.metrics.map((item, idx) => (
+                    <div key={idx} className="flex items-center gap-4 bg-blue-900/60 border border-blue-800 rounded-xl p-4 shadow">
+                      {iconMap[item.metric]}
+                      <div>
+                        <div className="text-blue-200">{item.metric}</div>
+                        <div className="text-indigo-100 text-lg font-bold">{item.value}</div>
+                        {item.description && (
+                          <div className="text-xs text-blue-400">{item.description}</div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
           </div>
         </div>
       )}
@@ -513,91 +521,6 @@ export default function COST({ analysisData }) {
   </Card>
 )}
 
-
-
-        {/* Financial Analysis */}
-{financial_analysis && (
-  <Card className="mb-10 bg-gradient-to-tr from-slate-900 via-indigo-900 to-neutral-900 border-0 shadow-xl">
-    <CardHeader>
-      <div className="flex items-center gap-3">
-        <BarChart4 className="text-indigo-300 w-7 h-7" />
-        <CardTitle className="text-2xl font-bold text-white">{financial_analysis.title}</CardTitle>
-      </div>
-      <CardDescription className="mt-2 text-indigo-200 text-base">
-        {financial_analysis.introduction}
-      </CardDescription>
-    </CardHeader>
-    <CardContent>
-      {/* Metrics Chart */}
-      {financial_analysis.metrics && (
-        <div className="bg-slate-900/70 border border-indigo-700 rounded-lg px-4 py-8 mb-8">
-          <h4 className="text-xl font-semibold text-indigo-100 mb-3 flex items-center gap-2">
-            <BarChart4 className="w-5 h-5 text-indigo-300" />
-            Metrics Overview
-          </h4>
-          <ul className="mt-4 mb-2 w-full max-w-xl space-y-2">
-            {financial_analysis.metrics.map((metric, index) => (
-              <li key={index} className="text-indigo-200">
-                <span className="font-semibold">{metric.metric}:</span>{" "}
-                <span className="text-indigo-400">{metric.value} {metric.currency}</span>
-                {metric.note && (
-                  <span className="text-slate-400 ml-2">({metric.note})</span>
-                )}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </CardContent>
-  </Card>
-)}
-
-{financial_analysis && (
-  <div className="space-y-6">
-    {financial_analysis.sections.map((section, index) => (
-      <div key={index} className="p-5 rounded-lg mt-3 bg-indigo-900/30 border border-indigo-700 mb-8">
-        <h4 className="text-lg font-semibold text-indigo-100 mb-1">
-          {section.heading}
-        </h4>
-        {section.content && <p className="text-indigo-200 mb-2">{section.content}</p>}
-        {/* Scenarios */}
-        {section.scenarios && (
-          <ul className="space-y-2 mt-2">
-            {section.scenarios.map((scenario, scenIndex) => (
-              <li key={scenIndex} className="border-l-4 border-indigo-400 pl-4 bg-indigo-900/20 rounded text-indigo-100 py-2">
-                <span className="font-semibold">{scenario.scenario} Scenario:</span>{" "}
-                Monthly Savings{" "}
-                <span className="text-indigo-200 font-bold">
-                  {formatCurrency(scenario.monthly_savings, scenario.currency)}
-                </span>
-                , Payback Period{" "}
-                <span className="font-bold text-indigo-300">{scenario.paybackperiodmonths}</span> months.
-              </li>
-            ))}
-          </ul>
-        )}
-        {/* Metrics Improved */}
-        {section.metrics_improved && (
-          <ul className="space-y-2 mt-2">
-            {section.metrics_improved.map((metric, metImpIndex) => (
-              <li
-                key={metImpIndex}
-                className="border-l-4 border-fuchsia-400 pl-4 bg-fuchsia-900/15 rounded text-fuchsia-100 py-2"
-              >
-                <span className="font-bold">{metric.metric}</span>:{" "}
-                <span className="text-fuchsia-200">Before</span> {metric.before},{" "}
-                <span className="text-fuchsia-300">After</span> {metric.after}
-                {metric.note && (
-                  <span className="text-slate-400 ml-2">({metric.note})</span>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    ))}
-  </div>
-)}
 
 {/* Implementation Timeline */}
 {implementation_timeline && (
