@@ -106,7 +106,7 @@ export default function Home() {
                     </li>
                     <li>
                       <span className="font-bold text-indigo-400">Clearly explain how much you are ready to spend on AI operations (this is a must):</span>{" "}
-                      This will give usa fair idea to give recommendations.
+                      This will give us a fair idea to give recommendations.
                     </li>
                     <li>
                       <span className="font-bold text-indigo-400">Clearly list key AI use cases and tools:</span>{" "}
