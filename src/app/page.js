@@ -105,6 +105,10 @@ export default function Home() {
                       State <b>employee count</b>, <b>total spend</b>, <b>AI budget</b>, and any relevant cost ratios.
                     </li>
                     <li>
+                      <span className="font-bold text-indigo-400">Clearly explain how much you are ready to spend on AI operations (this is a must):</span>{" "}
+                      This will give usa fair idea to give recommendations.
+                    </li>
+                    <li>
                       <span className="font-bold text-indigo-400">Clearly list key AI use cases and tools:</span>{" "}
                       Name main AI applications, integration points, and platform types (generative, automation, analytics, etc).
                     </li>
