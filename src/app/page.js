@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, Rocket } from "lucide-react";
 import { SignedOut, SignedIn, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import Navbar from "../components/navbar";
 
 export default function Home() {
   const [userMessage, setUserMessage] = useState("");
@@ -37,40 +38,8 @@ export default function Home() {
     <main className="min-h-screen w-full bg-gradient-to-br from-[#101219] via-[#191b22] to-[#262838] text-white font-sans">
       
       {/* NAV BAR */}
-      <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-gradient-to-r from-gray-900/80 to-gray-800/70 shadow-lg border border-gray-700/30 rounded-full px-8 py-3 flex items-center justify-between min-w-[340px] w-max max-w-3xl backdrop-blur-lg">
-        {/* Brand section on the left */}
-        <div className="flex items-center gap-3">
-          <Rocket className="h-6 w-6 text-gray-300" />
-          <span className="font-bold tracking-widest text-xl text-gray-100">Aetherius</span>
-          <span className="ml-3 text-sm text-gray-400 hidden md:block italic">AI Business Copilot</span>
-        </div>
-        {/* Auth buttons/user button on the right */}
-        <div className="flex items-center gap-2 ml-6">
-          <SignedOut>
-            <SignInButton>
-              <button className="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded-md text-sm font-medium transition focus:outline-none">
-                Sign in
-              </button>
-            </SignInButton>
-            <SignUpButton>
-              <button className="px-2 py-1 bg-indigo-100 hover:bg-indigo-300 text-indigo-900 rounded-md text-sm font-medium transition ml-1 focus:outline-none">
-                Sign up
-              </button>
-            </SignUpButton>
-          </SignedOut>
-          <SignedIn>
-            <UserButton
-              appearance={{
-                elements: {
-                  userButtonAvatarBox: "ring-2 ring-indigo-500",
-                }
-              }}
-              afterSignOutUrl="/"
-            />
-          </SignedIn>
-        </div>
-      </nav>
-
+      <Navbar />
+      
       {/* MAIN CONTENT */}
       <div className="pt-32 pb-16 w-full flex flex-col items-center min-h-screen">
         <div className="w-full max-w-7xl flex flex-col items-center">

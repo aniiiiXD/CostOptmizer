@@ -4,6 +4,11 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator"; 
+import { CheckCircle, Briefcase, Users, Cpu, Wallet, Globe, Target, Clock , DollarSign , ArrowDown} from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid , ResponsiveContainer, PieChart , Pie, Cell} from 'recharts';
+import { motion } from 'framer-motion';
+import { RadialProgress } from './radialProgress';
+
 
 
 export function removeMarkdown(text) {
@@ -115,6 +120,8 @@ export default function Roadmap({ analysisData }) {
     // Assuming 'analysis' is your JSON data object
 // const analysis = { ... };
 
+const COLORS = ['#3b82f6', '#06b6d4', '#8b5cf6', '#10b981', '#f59e0b'];
+
 return (
     <div className="container mx-auto py-8 px-4 md:px-6 lg:px-8 bg-gray-50 min-h-screen">
       <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">
@@ -125,81 +132,193 @@ return (
       <Card className="mb-8 shadow-lg">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Organization Profile</CardTitle>
-          <CardDescription>Overview of the company's current state and AI readiness.</CardDescription>
+          <CardDescription>Snapshot of company size, AI readiness, and strategic focus.</CardDescription>
         </CardHeader>
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-8 text-gray-700">
-          <div>
-            <p className="font-semibold text-gray-800">Industry:</p>
-            <p>{analysis?.organization_profile?.industry}</p>
-          </div>
-          <div>
-            <p className="font-semibold text-gray-800">Size:</p>
-            <p>{analysis?.organization_profile?.size}</p>
-          </div>
-          <div>
-            <p className="font-semibold text-gray-800">AI Maturity:</p>
-            <p>{analysis?.organization_profile?.ai_maturity} (Some Pilot Projects)</p>
-          </div>
-          <div>
-            <p className="font-semibold text-gray-800">Budget:</p>
-            <p>${analysis?.organization_profile?.budget?.toLocaleString()}</p>
-          </div>
-          <div>
-            <p className="font-semibold text-gray-800">Location Considerations:</p>
-            <p>{analysis?.organization_profile?.location || "Not specified, but data protection compliance indicates likely adherence to GDPR or similar regulations."}</p>
-          </div>
-          <div className="md:col-span-2 lg:col-span-1">
-            <p className="font-semibold text-gray-800">Primary Goal:</p>
-            <p>{analysis?.organization_profile?.goal}</p>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-gray-700">
+
+            {/* Industry */}
+            <div className="flex items-start gap-3">
+              <Briefcase className="w-6 h-6 text-blue-500 mt-1" />
+              <div>
+                <p className="font-semibold text-gray-800">Industry</p>
+                <p>{analysis?.organization_profile?.industry}</p>
+              </div>
+            </div>
+
+            {/* Company Size */}
+            <div className="flex items-start gap-3">
+              <Users className="w-6 h-6 text-purple-500 mt-1" />
+              <div>
+                <p className="font-semibold text-gray-800">Size</p>
+                <p>{analysis?.organization_profile?.size}</p>
+              </div>
+            </div>
+
+            {/* AI Maturity with bar */}
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-3">
+                <Cpu className="w-6 h-6 text-green-500" />
+                <p className="font-semibold text-gray-800">AI Maturity</p>
+              </div>
+              <div className="text-sm">{analysis?.organization_profile?.ai_maturity} (Some Pilot Projects)</div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="bg-green-500 h-2 rounded-full" style={{ width: "50%" }} />
+              </div>
+            </div>
+
+            {/* Budget */}
+            <div className="flex items-start gap-3">
+              <Wallet className="w-6 h-6 text-amber-500 mt-1" />
+              <div>
+                <p className="font-semibold text-gray-800">Budget</p>
+                <p>${analysis?.organization_profile?.budget?.toLocaleString()}</p>
+              </div>
+            </div>
+
+            {/* Location */}
+            <div className="flex items-start gap-3">
+              <Globe className="w-6 h-6 text-indigo-500 mt-1" />
+              <div>
+                <p className="font-semibold text-gray-800">Location Considerations</p>
+                <p>{analysis?.organization_profile?.location || "Likely GDPR-compliant"}</p>
+              </div>
+            </div>
+
+            {/* Goal */}
+            <div className="flex items-start gap-3 md:col-span-2 lg:col-span-1">
+              <Target className="w-6 h-6 text-red-500 mt-1" />
+              <div>
+                <p className="font-semibold text-gray-800">Primary Goal</p>
+                <p>{analysis?.organization_profile?.goal}</p>
+              </div>
+            </div>
+
           </div>
         </CardContent>
       </Card>
+
   
       <Separator className="my-8 bg-gray-300" />
   
       {/* Executive Summary Section */}
       <Card className="mb-8 shadow-lg">
-        <CardHeader>
+      
+        <CardHeader className="bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-2xl shadow-lg">
           <CardTitle className="text-2xl font-bold">Executive Summary</CardTitle>
-          <CardDescription>Key recommendations, timeline, and investment overview.</CardDescription>
+          <CardDescription className="text-emerald-100">
+            Visual summary of key recommendations, timeline, and investment
+          </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="col-span-1">
-              <h3 className="text-lg font-semibold mb-2 text-gray-800">Recommendations</h3>
-              <ul className="list-disc ml-5 space-y-1 text-gray-700">
+        <CardContent className="p-0">
+          <div className="flex flex-col space-y-6 p-6">
+            
+            {/* Recommendations Section */}
+            <motion.div 
+              className="bg-white p-5 rounded-lg shadow-md border-l-4 border-green-500"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="flex items-center mb-4">
+                <CheckCircle className="text-green-500 w-6 h-6 mr-2" />
+                <h3 className="text-xl font-semibold text-gray-800">Key Recommendations</h3>
+              </div>
+              <ul className="space-y-3 text-gray-700">
                 {analysis?.executive_summary?.recommendations?.map((rec, index) => (
-                  <li key={index}>{rec}</li>
+                  <motion.li 
+                    key={index} 
+                    className="flex items-start gap-3 p-2 hover:bg-green-50 rounded-md transition-colors"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                  >
+                    <CheckCircle className="text-green-500 w-5 h-5 mt-0.5 flex-shrink-0" />
+                    <span>{rec}</span>
+                  </motion.li>
                 ))}
               </ul>
-            </div>
-            <div className="col-span-1">
-              <h3 className="text-lg font-semibold mb-2 text-gray-800">Timeline Phases</h3>
-              <div className="space-y-2 text-gray-700">
+            </motion.div>
+
+            {/* Timeline Section */}
+            <motion.div 
+              className="bg-white p-5 rounded-lg shadow-md border-l-4 border-blue-500"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+            >
+              <div className="flex items-center mb-4">
+                <Clock className="text-blue-500 w-6 h-6 mr-2" />
+                <h3 className="text-xl font-semibold text-gray-800">Implementation Timeline</h3>
+              </div>
+              <div className="space-y-0">
                 {Object.entries(analysis?.executive_summary?.timeline || {}).map(([phase, description], index) => (
-                  <p key={index}>
-                    <strong className="capitalize">{phase.replace('_', ' ')}:</strong> {description}
-                  </p>
+                  <motion.div 
+                    key={index}
+                    className="relative"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.2 + index * 0.1 }}
+                  >
+                    <div className="ml-6 pb-6 relative">
+                      {index < Object.entries(analysis?.executive_summary?.timeline || {}).length - 1 && (
+                        <div className="absolute top-0 left-0 ml-2.5 h-full w-0.5 bg-blue-200"></div>
+                      )}
+                      <div className="absolute top-0 left-0 w-5 h-5 rounded-full bg-blue-500 border-2 border-white"></div>
+                      <div className="ml-8">
+                        <div className="font-semibold capitalize text-gray-800 text-lg">
+                          {phase.replace('_', ' ')}
+                        </div>
+                        <div className="text-gray-600 mt-1">{description}</div>
+                      </div>
+                    </div>
+                  </motion.div>
                 ))}
               </div>
-            </div>
-            <div className="col-span-1">
-              <h3 className="text-lg font-semibold mb-2 text-gray-800">Investment Summary</h3>
-              <div className="space-y-2 text-gray-700">
-                <p>
-                  <strong>Total:</strong> ${analysis?.executive_summary?.investment?.total?.toLocaleString()}
-                </p>
-                <p>
-                  <strong>Capex:</strong> ${analysis?.executive_summary?.investment?.capex?.toLocaleString()}
-                </p>
-                <p>
-                  <strong>Opex:</strong> ${analysis?.executive_summary?.investment?.opex?.toLocaleString()}
-                </p>
+            </motion.div>
+
+            {/* Investment Section */}
+            <motion.div 
+              className="bg-white p-5 rounded-lg shadow-md border-l-4 border-purple-500"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+            >
+              <div className="flex items-center mb-4">
+                <DollarSign className="text-purple-500 w-6 h-6 mr-2" />
+                <h3 className="text-xl font-semibold text-gray-800">Investment Summary</h3>
               </div>
-            </div>
+              <div className="flex flex-col items-center">
+                <BarChart 
+                  width={300} 
+                  height={200} 
+                  data={[
+                    { name: 'Capex', value: analysis?.executive_summary?.investment?.capex || 0 },
+                    { name: 'Opex', value: analysis?.executive_summary?.investment?.opex || 0 },
+                  ]}
+                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="value" fill="#8b5cf6" />
+                </BarChart>
+                
+                <div className="flex items-center mt-4 bg-purple-50 p-3 rounded-lg">
+                  <DollarSign className="text-purple-600 w-5 h-5 mr-1" />
+                  <span className="font-bold text-purple-700">Total Investment:</span>
+                  <span className="ml-2 text-gray-800 font-semibold">
+                    ${analysis?.executive_summary?.investment?.total?.toLocaleString()}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+            
           </div>
         </CardContent>
       </Card>
+
   
       <Separator className="my-8 bg-gray-300" />
   
@@ -245,57 +364,103 @@ return (
       <Separator className="my-8 bg-gray-300" />
   
       {/* Budget Section */}
-      <Card className="mb-8 shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold">Project Budget Breakdown</CardTitle>
-          <CardDescription>Detailed allocation of funds for personnel, technology, and contingency.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Category</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell className="font-medium">Personnel (AI/ML Engineer)</TableCell>
-                <TableCell className="text-right">${analysis?.budget?.personnel?.aimlengineer?.toLocaleString()}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Personnel (Data Scientist)</TableCell>
-                <TableCell className="text-right">${analysis?.budget?.personnel?.data_scientist?.toLocaleString()}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Personnel (Product Manager AI Focus)</TableCell>
-                <TableCell className="text-right">${analysis?.budget?.personnel?.productmanagerai_focus?.toLocaleString()}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Technology (Cloud AI Services)</TableCell>
-                <TableCell className="text-right">${analysis?.budget?.technology?.cloudaiservices?.toLocaleString()}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Contingency</TableCell>
-                <TableCell className="text-right">${analysis?.budget?.contingency?.toLocaleString()}</TableCell>
-              </TableRow>
-              <TableRow className="bg-gray-100 font-bold">
-                <TableCell>Total Project Budget</TableCell>
-                <TableCell className="text-right">
-                  ${(
-                    (analysis?.budget?.personnel?.aimlengineer || 0) +
-                    (analysis?.budget?.personnel?.data_scientist || 0) +
-                    (analysis?.budget?.personnel?.productmanagerai_focus || 0) +
-                    (analysis?.budget?.technology?.cloudaiservices || 0) +
-                    (analysis?.budget?.contingency || 0)
-                  )?.toLocaleString()}
+      
+      <Card className="mb-10 shadow-xl border border-gray-200">
+  <CardHeader className="pb-4">
+    <CardTitle className="text-3xl font-semibold flex items-center gap-2">
+      <DollarSign className="h-6 w-6 text-green-600" />
+      Project Budget Breakdown
+    </CardTitle>
+    <CardDescription className="text-muted-foreground">
+      Visual and tabular breakdown of funds across project categories.
+    </CardDescription>
+  </CardHeader>
+
+  <CardContent className="pt-0 grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+    <div>
+      <Table>
+        <TableHeader>
+          <TableRow className="bg-gray-100">
+            <TableHead>Category</TableHead>
+            <TableHead className="text-right">Amount</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {analysis?.team_structure?.roles?.map((role, index) => {
+            const salaryStr = role.salary_range?.[0] || "";
+            const cleaned = salaryStr.replace(/[₹,]/g, "").split("-").map(s => parseInt(s.trim()));
+            let avgSalary = 0;
+            if (cleaned.length === 2 && !isNaN(cleaned[0]) && !isNaN(cleaned[1])) {
+              avgSalary = ((cleaned[0] + cleaned[1]) / 2) * (role.headcount || 1);
+            }
+            return (
+              <TableRow key={index}>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline">Personnel</Badge>
+                    {role.name}
+                  </div>
+                </TableCell>
+                <TableCell className="text-right text-green-700 font-medium">
+                  ₹{avgSalary.toLocaleString()}
                 </TableCell>
               </TableRow>
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-  
+            );
+          })}
+
+          {analysis?.budget?.technology?.cloudaiservices && (
+            <TableRow>
+              <TableCell>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline">Technology</Badge>
+                  Cloud AI Services
+                </div>
+              </TableCell>
+              <TableCell className="text-right text-blue-700 font-medium">
+                ₹{analysis.budget.technology.cloudaiservices.toLocaleString()}
+              </TableCell>
+            </TableRow>
+          )}
+
+          {analysis?.budget?.contingency && (
+            <TableRow>
+              <TableCell>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline">Other</Badge>
+                  Contingency
+                </div>
+              </TableCell>
+              <TableCell className="text-right text-yellow-700 font-medium">
+                ₹{analysis.budget.contingency.toLocaleString()}
+              </TableCell>
+            </TableRow>
+          )}
+
+          <TableRow className="bg-gray-100 font-semibold text-black">
+            <TableCell>Total Project Budget</TableCell>
+            <TableCell className="text-right">
+              ₹{(() => {
+                let total = 0;
+                analysis?.team_structure?.roles?.forEach((role) => {
+                  const salaryStr = role.salary_range?.[0] || "";
+                  const cleaned = salaryStr.replace(/[₹,]/g, "").split("-").map(s => parseInt(s.trim()));
+                  if (cleaned.length === 2 && !isNaN(cleaned[0]) && !isNaN(cleaned[1])) {
+                    total += ((cleaned[0] + cleaned[1]) / 2) * (role.headcount || 1);
+                  }
+                });
+                total += analysis?.budget?.technology?.cloudaiservices || 0;
+                total += analysis?.budget?.contingency || 0;
+                return total.toLocaleString();
+              })()}
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </div>
+  </CardContent>
+</Card>
+
+
       <Separator className="my-8 bg-gray-300" />
   
       {/* Timeline Section */}

@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Building2, AlertTriangle, Target , AlertCircle, ShieldCheck, TrendingUp, Flame } from "lucide-react";
+
 
 export function removeMarkdown(text) {
     if (!text || typeof text !== 'string') {
@@ -109,128 +111,154 @@ export default function Analyze({ analysisData }) {
     }
 
     return (
-        <div className="mb-8">
-            <div className="bg-white p-8 shadow-md rounded-lg mb-8 text-black">
-                <h2 className="text-2xl font-bold mb-4">Business Profile Analysis</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                    <h3 className="text-lg font-semibold mb-2">Organization Details</h3>
-                    <div className="space-y-2">
-                        <p><strong>Name:</strong> {analysis?.swot_analysis?.business_profile?.name}</p>
-                        <p><strong>Industry:</strong> {analysis?.swot_analysis?.business_profile?.industry}</p>
-                        <p><strong>Size:</strong> {analysis?.swot_analysis?.business_profile?.size}</p>
-                    </div>
-                    </div>
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                    <h3 className="text-lg font-semibold mb-2">Challenges and Goals</h3>
-                    <div className="space-y-2">
-                        <p><strong>Current Challenges:</strong> {analysis?.swot_analysis?.business_profile?.current_challenges}</p>
-                        <p><strong>Existing Tech Infrastructure:</strong> {analysis?.swot_analysis?.business_profile?.existing_tech_infrastructure}</p>
-                        <p><strong>AI Goals:</strong> {analysis?.swot_analysis?.business_profile?.ai_goals}</p>
-                    </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="bg-white p-8 shadow-md rounded-lg mb-8">
-            <h2 className="text-2xl font-bold mb-4">Brief Overview</h2>
-            <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="text-lg font-semibold mb-2">Current Challenges and Summary</h3>
-                <p className="text-gray-600">{analysis?.swot_analysis?.brief}</p>
-            </div>
-            </div>
-
-            
-            
-            <div className="3 container mx-auto p-4 md:p-6 lg:p-8">
-            <h2 className="text-2xl font-bold mb-4">Strengths</h2>
-            {analysis?.swot_analysis?.strengths?.map((strength, index) => (
-            <Card key={index} className="mb-4">
-                <CardHeader>
-                <CardTitle>{strength.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                <CardDescription>{strength.description}</CardDescription>
-                <h4 className="text-lg font-bold mt-4 mb-2">Examples:</h4>
-                <ul className="list-disc ml-5 text-gray-600">
-                    {strength.examples.map((example, exIndex) => (
-                    <li key={exIndex}>{example}</li>
-                    ))}
-                </ul>
-                <h4 className="text-lg font-bold mt-4 mb-2">Comparison:</h4>
-                <p>{strength.comparison}</p>
-                </CardContent>
-            </Card>
-            ))}
-            </div>
-
-            
-            <div className="4 container mx-auto p-4 md:p-6 lg:p-8">
-            <h2 className="text-2xl font-bold mb-4">Weaknesses</h2>
-            {analysis?.swot_analysis?.weaknesses?.map((weak, index) => (
-            <Card key={index} className="mb-4">
-                <CardHeader>
-                <CardTitle>{weak.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                <CardDescription>{weak.description}</CardDescription>
-                <h4 className="text-lg font-bold mt-4 mb-2">Examples:</h4>
-                <ul className="list-disc ml-5 text-gray-600">
-                    {weak.examples.map((example, exIndex) => (
-                    <li key={exIndex}>{example}</li>
-                    ))}
-                </ul>
-                <h4 className="text-lg font-bold mt-4 mb-2">Comparison:</h4>
-                <p>{weak.comparison}</p>
-                </CardContent>
-            </Card>
-            ))}
-            </div>
-
-            <div className="5 container mx-auto p-4 md:p-6 lg:p-8">
-            <h2 className="text-2xl font-bold mb-4">Opportunities</h2>
-            {analysis?.swot_analysis?.opportunities?.map((opp, index) => (
-            <Card key={index} className="mb-4">
-                <CardHeader>
-                <CardTitle>{opp.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                <CardDescription>{opp.description}</CardDescription>
-                <h4 className="text-lg font-bold mt-4 mb-2">Examples:</h4>
-                <ul className="list-disc ml-5 text-gray-600">
-                    {opp.examples.map((example, exIndex) => (
-                    <li key={exIndex}>{example}</li>
-                    ))}
-                </ul>
-                <h4 className="text-lg font-bold mt-4 mb-2">Comparison:</h4>
-                <p>{opp.comparison}</p>
-                </CardContent>
-            </Card>
-            ))}
-            </div>
-
-            <div className="6 container mx-auto p-4 md:p-6 lg:p-8">
-            <h2 className="text-2xl font-bold mb-4">Threats</h2>
-            {analysis?.swot_analysis?.threats?.map((threat, index) => (
-            <Card key={index} className="mb-4">
-                <CardHeader>
-                <CardTitle>{threat.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                <CardDescription>{threat.description}</CardDescription>
-                <h4 className="text-lg font-bold mt-4 mb-2">Examples:</h4>
-                <ul className="list-disc ml-5 text-gray-600">
-                    {threat.examples.map((example, exIndex) => (
-                    <li key={exIndex}>{example}</li>
-                    ))}
-                </ul>
-                <h4 className="text-lg font-bold mt-4 mb-2">Comparison:</h4>
-                <p>{threat.comparison}</p>
-                </CardContent>
-            </Card>
-            ))}
-            </div>
-
+        <div className="max-w-7xl mx-auto p-6 sm:p-8 space-y-12 text-black dark:text-white">
+            {/* Business Profile */}
+            <section className="bg-gradient-to-tr from-slate-900 via-purple-950 to-blue-900 p-8 rounded-2xl shadow-2xl space-y-8 border border-gray-800 mb-10">
+  <h2 className="text-3xl font-extrabold bg-gradient-to-r from-purple-400 to-blue-300 bg-clip-text text-transparent tracking-tight">
+    Business Profile Analysis
+  </h2>
+  <div className="grid md:grid-cols-2 gap-8">
+    {/* Organization Details */}
+    <Card className="bg-purple-900/40 border-0 shadow-lg">
+      <CardHeader className="pb-2">
+        <div className="flex items-center gap-2 mb-1">
+          <Building2 className="w-6 h-6 text-purple-200" />
+          <CardTitle className="text-xl font-semibold text-purple-100">
+            Organization Details
+          </CardTitle>
         </div>
+      </CardHeader>
+      <CardContent>
+        <ul className="space-y-4 text-purple-100 text-base">
+          <li>
+            <span className="font-semibold text-purple-200">Name:</span>
+            <span className="ml-2">{analysis?.swot_analysis?.business_profile?.name}</span>
+          </li>
+          <li>
+            <span className="font-semibold text-purple-200">Industry:</span>
+            <span className="ml-2">{analysis?.swot_analysis?.business_profile?.industry}</span>
+          </li>
+          <li>
+            <span className="font-semibold text-purple-200">Size:</span>
+            <span className="ml-2">{analysis?.swot_analysis?.business_profile?.size}</span>
+          </li>
+        </ul>
+      </CardContent>
+    </Card>
+    {/* Challenges & Goals */}
+    <Card className="bg-blue-900/40 border-0 shadow-lg">
+      <CardHeader className="pb-2">
+        <div className="flex items-center gap-2 mb-1">
+          <AlertTriangle className="w-6 h-6 text-blue-200" />
+          <CardTitle className="text-xl font-semibold text-blue-100">
+            Challenges &amp; Goals
+          </CardTitle>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <ul className="space-y-4 text-blue-100 text-base">
+          <li>
+            <span className="font-semibold text-blue-200">Current Challenges:</span>
+            <span className="ml-2">{analysis?.swot_analysis?.business_profile?.current_challenges}</span>
+          </li>
+          <li>
+            <span className="font-semibold text-blue-200">Existing Tech Infrastructure:</span>
+            <span className="ml-2">{analysis?.swot_analysis?.business_profile?.existing_tech_infrastructure}</span>
+          </li>
+          <li>
+            <span className="font-semibold text-blue-200">AI Goals:</span>
+            <span className="ml-2">{analysis?.swot_analysis?.business_profile?.ai_goals}</span>
+          </li>
+        </ul>
+      </CardContent>
+    </Card>
+  </div>
+</section>
+
+
+
+            {/* Brief Overview */}
+            
+
+        <section className="bg-gradient-to-tr from-green-900 via-teal-900 to-gray-900 p-8 rounded-2xl shadow-2xl border border-gray-800 mb-10">
+            <h2 className="text-3xl font-extrabold mb-6 bg-gradient-to-r from-green-400 to-teal-300 bg-clip-text text-transparent tracking-tight">
+                Brief Overview
+            </h2>
+            <div className="bg-white/10 dark:bg-gray-800 p-6 rounded-xl border-l-4 border-green-400 shadow flex flex-col gap-2">
+                <div className="flex items-center gap-3 mb-1">
+                <AlertCircle className="text-green-300 w-6 h-6" />
+                <h3 className="text-lg font-semibold text-green-100">
+                    Current Challenges &amp; Summary
+                </h3>
+                </div>
+                <p className="text-black dark:text-gray-300 leading-relaxed">
+                {analysis?.swot_analysis?.brief}
+                </p>
+            </div>
+        </section>
+
+
+            {/* SWOT Section Reusable */}
+            {['strengths', 'weaknesses', 'opportunities', 'threats'].map((type) => {
+  // color/icon mapping
+                const colorAccent = {
+                    strengths:    "from-green-400 to-emerald-500",
+                    weaknesses:   "from-pink-400 to-red-400",
+                    opportunities:"from-sky-400 to-blue-400",
+                    threats:      "from-orange-400 to-red-500",
+                }[type];
+
+                const iconMap = {
+                    strengths:    <ShieldCheck className="w-7 h-7 text-green-300" />,
+                    weaknesses:   <AlertCircle className="w-7 h-7 text-pink-300" />,
+                    opportunities:<TrendingUp className="w-7 h-7 text-sky-300" />,
+                    threats:      <Flame className="w-7 h-7 text-orange-300" />,
+                }[type];
+
+                return (
+                    <section
+                    key={type}
+                    className={`p-4 md:p-6 lg:p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-800 mb-10`}
+                    >
+                    <div className="flex items-center gap-3 mb-6">
+                        {iconMap}
+                        <h2 className={`text-2xl font-extrabold capitalize text-gradient bg-gradient-to-r ${colorAccent} bg-clip-text text-transparent tracking-tight`}>
+                        {type}
+                        </h2>
+                    </div>
+                    {(analysis?.swot_analysis?.[type] || []).map((item, index) => (
+                        <Card
+                        key={index}
+                        className="mb-7 border-0 shadow-lg bg-gradient-to-br from-white/80 via-white/65 to-gray-50 dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 dark:bg-opacity-90"
+                        >
+                        <CardHeader className="flex items-center gap-2 pb-2">
+                            <CardTitle className={`text-xl font-semibold`}>
+                            <span className={`bg-gradient-to-r ${colorAccent} bg-clip-text text-transparent`}>
+                                {item.title}
+                            </span>
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4 text-gray-700 dark:text-gray-300">
+                            <CardDescription>{item.description}</CardDescription>
+                            <div>
+                            <h4 className={`text-lg font-semibold mb-1`}>Examples</h4>
+                            <ul className="list-disc list-inside pl-4 ml-2">
+                                {item.examples.map((example, i) => <li key={i}>{example}</li>)}
+                            </ul>
+                            </div>
+                            <div>
+                            <h4 className={`text-lg font-semibold mb-1`}>Comparison</h4>
+                            <p>{item.comparison}</p>
+                            </div>
+                        </CardContent>
+                        </Card>
+                    ))}
+                    </section>
+                );
+                })}
+
+
+            </div>
+
     );
 }
